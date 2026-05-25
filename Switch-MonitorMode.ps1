@@ -55,6 +55,21 @@ param (
 # End of parameter block
 )
 
+# Check if the DisplayConfig module is available on the system
+if (-not (Get-Module -ListAvailable -Name DisplayConfig))
+# Begin module installation block
+{
+    # Configure SecurityProtocol to TLS 1.2 to enable secure connections
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    # Install NuGet package provider for current user to handle module dependencies
+    Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser -ErrorAction SilentlyContinue
+    # Trust PSGallery repository to bypass interactive prompt messages
+    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -ErrorAction SilentlyContinue
+    # Download and install DisplayConfig module from PowerShell Gallery
+    Install-Module -Name DisplayConfig -Scope CurrentUser -Force -SkipPublisherCheck -ErrorAction SilentlyContinue
+# End module installation block
+}
+
 # Import the DisplayConfig module to manage monitors
 Import-Module DisplayConfig -ErrorAction Stop
 

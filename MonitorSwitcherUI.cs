@@ -727,10 +727,10 @@ namespace MonitorSwitcherUI
                 psi.UseShellExecute = false;
                 // Hide the console window creation
                 psi.CreateNoWindow = true;
-                // Redirect standard output for reading results
-                psi.RedirectStandardOutput = true;
-                // Redirect standard error for reading errors
-                psi.RedirectStandardError = true;
+                // Disable redirection of standard output to prevent process deadlocks
+                psi.RedirectStandardOutput = false;
+                // Disable redirection of standard error to prevent process deadlocks
+                psi.RedirectStandardError = false;
                 // Start the process
                 Process proc = Process.Start(psi);
                 // Wait for the script to complete execution
